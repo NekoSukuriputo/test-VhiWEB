@@ -9,7 +9,7 @@ const INIT_LOGIN = {
   password: ''
 }
 
-export const useCounterStore = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: '' as string,
     requestLogin: {
