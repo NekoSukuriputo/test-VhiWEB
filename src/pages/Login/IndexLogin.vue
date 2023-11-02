@@ -9,9 +9,9 @@
             <LoginIllustration style="max-height: 100;" />
           </div>
           <div class="col-lg-7 px-5 col-md-7 col-sm-12">
-            <h5 class="text-weight-bolder">
+            <h4 class="text-weight-bolder">
               Login
-            </h5>
+            </h4>
             <div>
               <q-form
                 class="q-gutter-md"
@@ -92,7 +92,7 @@ const onSubmit = async () => {
   isLoading.value = true
   await authStore.login()
   isLoading.value = false
-  router.push('/')
+  router.push('/users')
 }
 
 const onReset = () => {
@@ -101,8 +101,9 @@ const onReset = () => {
 
 </script>
 
-<style lang="sass" scoped>
-.my-card
-  width: 100%
-  max-width: 1000px
+<style lang="scss" scoped>
+.my-card {
+  width: 100%;
+  max-width: 1000px;
+}
 </style>

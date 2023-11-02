@@ -21,44 +21,68 @@ const INIT_LIST_USERS = {
   data: []
 }
 
-export const useCounterStore = defineStore('users', {
+export const useUsersStore = defineStore('users', {
   state: () => ({
     detailUser: {
       ...INIT_USER
     } as User,
     listUsers: {
       ...INIT_LIST_USERS
-    } as ListUsers
+    } as ListUsers,
+    pagination: {
+      currentPage: 1,
+      totalPage: 2
+    }
   }),
 
   getters: {
     getUser (state) {
       return state.detailUser
     },
-    getListUser (state) {
+    getListUsers (state) {
       return state.listUsers
+    },
+    getPagination (state) {
+      return state.pagination
     }
   },
 
   actions: {
-    async getListUsers () {
+    async setPagination (page: number) {
+      this.pagination.currentPage = page
+      await this.fetchListUsers()
+    },
+    async fetchListUsers () {
       try {
         const params = {
-          page: '1'
+          page: this.pagination.currentPage
         }
-        const res: AxiosResponse<ListUsers> = await ApiService.get('/users', new URLSearchParams(params).toString())
+        const res: AxiosResponse<ListUsers> = await ApiService.get('/users', '', new URLSearchParams(params).toString())
         this.listUsers = res.data
+        this.pagination.currentPage = res.data.page
+        this.pagination.totalPage = res.data.total_pages
       } catch (error) {
         console.error(error)
       }
     },
-    async getUser (id: string) {
+    async fetchUser (id: string) {
       try {
-        const res: AxiosResponse<User> = await ApiService.get(`/users/${id}`)
+        const res: AxiosResponse<User> = await (await ApiService.get(`/users/${id}`)).data
         this.detailUser = res.data
       } catch (error) {
         console.error(error)
       }
+    },
+    searchUser (keyword:string) {
+      const keywordLower = keyword.toLowerCase()
+
+      return this.listUsers.data.filter(obj => {
+        return (
+          obj.first_name.toLowerCase().includes(keywordLower) ||
+          obj.last_name.toLowerCase().includes(keywordLower) ||
+          obj.email.toLowerCase().includes(keywordLower)
+        )
+      })
     }
   }
 })
