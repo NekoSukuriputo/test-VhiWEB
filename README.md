@@ -3,8 +3,8 @@
 Test Technical for VhiWEB
 
 ## USER LOGIN
-email : eve.holt@reqres.in
-password: cityslicka
+- email : eve.holt@reqres.in
+- password: cityslicka
 
 ## FITUR
 - Login
