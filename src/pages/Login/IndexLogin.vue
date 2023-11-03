@@ -5,10 +5,13 @@
     >
       <q-card-section>
         <div class="row">
-          <div class="col-lg-5 col-md-5 col-sm-12">
-            <LoginIllustration style="max-height: 100;" />
+          <div
+            class="col-lg-5 col-md-5"
+            style="height: 100;"
+          >
+            <LoginIllustration />
           </div>
-          <div class="col-lg-7 px-5 col-md-7 col-sm-12">
+          <div class="col-lg-7 q-px-md col-md-7 col-sm-12">
             <h4 class="text-weight-bolder">
               Login
             </h4>
@@ -89,10 +92,14 @@ const formData: ComputedRef<AuthRequest> = computed(() => {
 })
 
 const onSubmit = async () => {
-  isLoading.value = true
-  await authStore.login()
-  isLoading.value = false
-  router.push('/users')
+  try {
+    isLoading.value = true
+    await authStore.login()
+    isLoading.value = false
+    router.push('/users')
+  } catch (error) {
+    isLoading.value = false
+  }
 }
 
 const onReset = () => {

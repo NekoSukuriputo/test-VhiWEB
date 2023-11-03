@@ -2,6 +2,19 @@
 
 Test Technical for VhiWEB
 
+## USER LOGIN
+- email : eve.holt@reqres.in
+- password: cityslicka
+
+## FITUR
+- Login
+- List User Data
+- Detail User Data
+- Search User Data
+
+## HOSTED PROJECT
+https://test-vhi-web.vercel.app/
+
 ## Install the dependencies
 ```bash
 yarn

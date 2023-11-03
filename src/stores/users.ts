@@ -4,6 +4,7 @@ import { User, Users, ListUsers } from 'src/types/entities/users/Index'
 
 import ApiService from 'src/services/ApiService'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { Notify } from 'quasar'
 
 const INIT_USER = {
   id: 1,
@@ -32,7 +33,8 @@ export const useUsersStore = defineStore('users', {
     pagination: {
       currentPage: 1,
       totalPage: 2
-    }
+    },
+    stateIsLoading: false
   }),
 
   getters: {
@@ -44,6 +46,9 @@ export const useUsersStore = defineStore('users', {
     },
     getPagination (state) {
       return state.pagination
+    },
+    isLoading (state) {
+      return state.stateIsLoading
     }
   },
 
@@ -54,6 +59,7 @@ export const useUsersStore = defineStore('users', {
     },
     async fetchListUsers () {
       try {
+        this.stateIsLoading = true
         const params = {
           page: this.pagination.currentPage
         }
@@ -61,16 +67,31 @@ export const useUsersStore = defineStore('users', {
         this.listUsers = res.data
         this.pagination.currentPage = res.data.page
         this.pagination.totalPage = res.data.total_pages
+        this.stateIsLoading = false
       } catch (error) {
+        this.stateIsLoading = false
         console.error(error)
+        Notify.create({
+          type: 'negative',
+          message: error.response.data.error,
+          position: 'top'
+        })
       }
     },
     async fetchUser (id: string) {
       try {
+        this.stateIsLoading = true
         const res: AxiosResponse<User> = await (await ApiService.get(`/users/${id}`)).data
         this.detailUser = res.data
+        this.stateIsLoading = false
       } catch (error) {
         console.error(error)
+        this.stateIsLoading = false
+        Notify.create({
+          type: 'negative',
+          message: error.response.data.error,
+          position: 'top'
+        })
       }
     },
     searchUser (keyword:string) {
