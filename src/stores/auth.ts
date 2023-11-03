@@ -37,6 +37,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const res: AxiosResponse<AuthResponse> = await ApiService.post('/login', this.requestLogin as AxiosRequestConfig)
         localStorage.setItem('token', res.data.token)
+        this.resetRequestLogin()
       } catch (error) {
         console.error(error)
         Notify.create({
@@ -47,6 +48,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     logout () {
+      this.resetRequestLogin()
       localStorage.removeItem('token')
     }
   }
