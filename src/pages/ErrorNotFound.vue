@@ -20,7 +20,7 @@
         color="white"
         text-color="blue"
         unelevated
-        to="/"
+        to="/users"
         label="Go Home"
         no-caps
       />
