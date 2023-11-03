@@ -3,6 +3,7 @@ import { AuthRequest, AuthResponse } from 'src/types/entities/Auth'
 
 import ApiService from 'src/services/ApiService'
 import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { Notify } from 'quasar'
 
 const INIT_LOGIN = {
   email: '',
@@ -38,6 +39,11 @@ export const useAuthStore = defineStore('auth', {
         localStorage.setItem('token', res.data.token)
       } catch (error) {
         console.error(error)
+        Notify.create({
+          type: 'negative',
+          message: error.response.data.error,
+          position: 'top'
+        })
       }
     },
     logout () {
